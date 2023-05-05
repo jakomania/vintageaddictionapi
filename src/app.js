@@ -1,5 +1,6 @@
 
 // node .\src\server.js
+// entrar en http://localhost:3000/login
 
 var express = require('express');
 const session = require('express-session');
