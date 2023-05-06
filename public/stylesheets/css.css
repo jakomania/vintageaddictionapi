@@ -101,14 +101,10 @@ a {
 .rowdash {
     padding: 15px;
 }
-
+/*
 .drag-over {
     outline: solid 10px #480b97;
-}
-
-.nodrag-over {
-    outline: solid 10px red;
-}
+}*/
 
 .row>img{
     padding-left: 0px !important;
@@ -141,4 +137,8 @@ a {
 .playbtn:hover{
     background-color: #d710e9 !important;
     color: white !important;
+}
+
+.hidden {
+    display: none;
 }

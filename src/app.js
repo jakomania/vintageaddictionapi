@@ -7,7 +7,7 @@ const session = require('express-session');
 const path = require("path");
 const http = require('http');
 const { Server } = require("socket.io");
-
+const rooms = require('./Room');
 var app = express();
 const server = http.createServer(app);
 const io = new Server(server);
@@ -31,6 +31,7 @@ app.use(sessionMiddleware);
 io.engine.use(sessionMiddleware);
 
 app.use('/', require('./routes/auth'));
+app.use('/', require('./controllers/registerController'));
 app.use('/', require('./routes/dashboard'));
 
 // catch 404 and forward to error handler
@@ -48,6 +49,19 @@ io.on('connection', (socket) => {
     socket.on('rooms:join', (message) => {
         console.log(message, socket.request.session.user);
 
+        rooms
+            .forEach(room => {
+                const index = room.users.findIndex(user => user.email === socket.request.session.user.email);
+                if (index >= 0) {
+                    room.users.splice(index,1);
+                }
+            });
+
+        const index = rooms.findIndex(item => item.id === message);
+        if (index >= 0) {
+            rooms[index].users.push(socket.request.session.user);
+        }
+
         io.emit("rooms:joined", {
             roomId: message,
             username: socket.request.session.user.username
@@ -56,4 +70,8 @@ io.on('connection', (socket) => {
 
 });
 
-module.exports = server;
+setInterval(() => {
+    io.emit('rooms:status', rooms);
+}, 250);
+
+module.exports = {server, io};

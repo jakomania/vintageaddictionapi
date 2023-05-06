@@ -52,23 +52,23 @@
   <div class="d-flex justify-content-center">
     <div class="col-2 text-center salas">
       <img id="room01" name="rooms" src="images/room01.png" alt="Room" class="bradius salanum" />
-      <p class="m-3 white">Empty</p>
-      <button class="btn btn-primary btn-lg btn-block playbtn" type="submit">Play!</button>
+      <div class="empty"><p class="m-3 white">Empty</p></div>
+      <div class="waiting"><p class="m-3 white">Waiting</p></div>
+      <div class="full"><p class="m-3 white">Full</p></div>
+      <div class="leave"><button class="btn btn-primary btn-lg btn-block playbtn" type="submit">Leave</button></div>
+      <div class="play"><button class="btn btn-primary btn-lg btn-block playbtn" type="submit">Play!</button></div>
     </div>
     <div class="col-2 text-center salas">
       <img id="room02" name="rooms" src="images/room02.png" alt="Room" class="bradius salanum" />
       <p class="m-3 white">Empty</p>
-      <button class="btn btn-primary btn-lg btn-block playbtn" type="submit">Play!</button>
     </div>
     <div class="col-2 text-center salas">
       <img id="room03" name="rooms" src="images/room03.png" alt="Room" class="bradius salanum" />
       <p class="m-3 white">Empty</p>
-      <button class="btn btn-primary btn-lg btn-block playbtn" type="submit">Play!</button>
     </div>
     <div class="col-2 text-center salas">
       <img id="room04" name="rooms" src="images/room04.png" alt="Room" class="bradius salanum" />
       <p class="m-3 white">Empty</p>
-      <button class="btn btn-primary btn-lg btn-block playbtn" type="submit">Play!</button>
     </div>
   </div>
   </div>
@@ -77,13 +77,43 @@
 <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
 <script>
     var socket = io();
+    const myEmail = "{{user.email}}"
 
-    socket.on('rooms:joined', (data) => {
-      console.log(data);
+    console.log('my email is' , myEmail);
+
+    socket.on('rooms:status', (data) => {
+        let inARoom = false;
+
+      data.forEach(room => {
+          const id = room.id;
+          const users = room.users;
+
+          if (users.findIndex((user) => user.email === myEmail ) >= 0) {
+              inARoom = true;
+              document.getElementById(id).style.opacity = 1;
+              document.getElementsByClassName('leave')[0].classList.remove('hidden');
+              document.getElementsByClassName('empty')[0].classList.add('hidden');
+              document.getElementsByClassName('waiting')[0].classList.remove('hidden');
+          } else {
+              document.getElementById(id).style.opacity = 0.5;
+          }
+
+          //if (users.length === 2) {
+          //    document.getElementById(id).style.opacity = 0.4;
+          //}
+
+      });
+
+      if (!inARoom) {
+          data.map(room => room.id).forEach(id => document.getElementById(id).style.opacity = 1);
+          document.getElementsByClassName('leave')[0].classList.add('hidden');
+          document.getElementsByClassName('waiting')[0].classList.add('hidden');
+          document.getElementsByClassName('full')[0].classList.add('hidden');
+          document.getElementsByClassName('play')[0].classList.add('hidden');
+      }
     });
 
     //Estados
-
 
 
     //Add drag & drop capabilties
