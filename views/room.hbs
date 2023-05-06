@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {{!-- <meta http-equiv="refresh" content="5"> --}}
+
+    <title>Vintage Addiction</title>
+    <link rel="stylesheet" href="../stylesheets/css.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap" rel="stylesheet">
+    <link rel='stylesheet' href='https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js" integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N" crossorigin="anonymous"></script>
+</head>
+
+<body style="background-image: url(https://cdn.discordapp.com/attachments/891271708160438283/1093958378809733120/bg-dash.jpg);">
+
+<header>
+  <nav class="navbar bg-body-tertiary fixed-top " style="background-color: #480b97 !important;">
+    <div class="container col-12 col-md-12 col-lg-12 col-xl-12">
+      <a class="navbar-brand" href="/"><img class="logo" src="../images/logo.png"/></a>
+      <a onclick="logOut()" class="nav-link" href="/logout"><i class="fi fi-br-address-card white" style="font-size:28px;"></i></a>
+    </div>
+  </nav>
+</header>
+
+
+<div class="container" style="margin-top:130px;">
+
+  <div class="row" >
+    <div class="col">
+      <h1 id="room" class="text-center white">{{roomId}}</h1>
+    </div>
+  </div>
+  <div class="row center players" >
+    <div class="col-3 text-center">
+      <img  id="player1Avatar"  style="width:130px;border-radius: 15px;" alt="Player 1 Avatar" class="bradius" src="../{{user.avatar}}" />
+      <h3  id="player1User" class="text-center white p-4" alt="Player 1 User">{{user.username}}</h3>
+      <h3 class="white" alt="vs">score</h3>
+    </div>
+    <div id="wrapper-game" class="col-5 text-center">
+      <div id="board-game">
+          <canvas id="11" class="canvas" onClick="Whitecanvas(ctx11)" width="100" height="100" style="border:2px solid #000000;"></canvas>
+          <canvas id="12" class="canvas" onClick="Whitecanvas(ctx12)" width="100" height="100" style="border:2px solid #000000;"></canvas>
+          <canvas id="13" class="canvas" onClick="Whitecanvas(ctx13)" width="100" height="100" style="border:2px solid #000000;"></canvas>
+          <canvas id="14" class="canvas" onClick="Whitecanvas(ctx14)" width="100" height="100" style="border:2px solid #000000;"></canvas>
+          <canvas id="21" class="canvas" onClick="Whitecanvas(ctx21)" width="100" height="100" style="border:2px solid #000000;"></canvas>
+          <canvas id="22" class="canvas" onClick="Whitecanvas(ctx22)" width="100" height="100" style="border:2px solid #000000;"></canvas>
+          <canvas id="23" class="canvas" onClick="Whitecanvas(ctx23)" width="100" height="100" style="border:2px solid #000000;"></canvas>
+          <canvas id="24" class="canvas" onClick="Whitecanvas(ctx24)" width="100" height="100" style="border:2px solid #000000;"></canvas>
+          <canvas id="31" class="canvas" onClick="Whitecanvas(ctx31)" width="100" height="100" style="border:2px solid #000000;"></canvas>
+          <canvas id="32" class="canvas" onClick="Whitecanvas(ctx32)" width="100" height="100" style="border:2px solid #000000;"></canvas>
+          <canvas id="33" class="canvas" onClick="Whitecanvas(ctx33)" width="100" height="100" style="border:2px solid #000000;"></canvas>
+          <canvas id="34" class="canvas" onClick="Whitecanvas(ctx34)" width="100" height="100" style="border:2px solid #000000;"></canvas>
+          <canvas id="41" class="canvas" onClick="Whitecanvas(ctx41)" width="100" height="100" style="border:2px solid #000000;"></canvas>
+          <canvas id="42" class="canvas" onClick="Whitecanvas(ctx42)" width="100" height="100" style="border:2px solid #000000;"></canvas>
+          <canvas id="43" class="canvas" onClick="Whitecanvas(ctx43)" width="100" height="100" style="border:2px solid #000000;"></canvas>
+          <canvas id="44" class="canvas" onClick="Whitecanvas(ctx44)" width="100" height="100" style="border:2px solid #000000;"></canvas>
+      </div>
+    </div>
+    <div class="col-3 text-center">
+      <img  src="../{{other.avatar}}" id="player2Avatar"  style="width: 130px;" alt="Avatar" class="bradius" />
+      <h3  id="player2User" class="text-center white p-4" alt="Player 2 User">{{other.username}}</h3>
+      <h3 class="white" alt="vs">score</h3>
+    </div>
+  </div>
+</div>
+</div>
+
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+<script>
+  var roomId = "{{roomId}}";
+  var user = {
+      username: "{{user.username}}",
+      avatar: "{{user.avatar}}"
+  }
+  var otherUser = {
+    username: "{{other.username}}",
+    avatar: "{{other.avatar}}"
+  };
+  var socket = io();
+
+  socket.emit("rooms:play", {roomId});
+
+/*
+  socket.on('rooms:play:moved', ({x, y, user}) {
+      if()
+  });*/
+
+
+  function newMove(x, y)
+  {
+      socket.emit('rooms:play:move', {x, y, roomId})
+  }
+
+
+</script>
+
+
+</body>
+</html>
+

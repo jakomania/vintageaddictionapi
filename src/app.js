@@ -33,6 +33,7 @@ io.engine.use(sessionMiddleware);
 app.use('/', require('./routes/auth'));
 app.use('/', require('./controllers/registerController'));
 app.use('/', require('./routes/dashboard'));
+app.use('/rooms', require('./routes/game'));
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
@@ -45,6 +46,17 @@ io.on('connection', (socket) => {
     socket.on('disconnect', () => {
         console.log('a user disconnected');
     });
+
+    socket.on('rooms:play', ({roomId}) => {
+        socket.join(roomId);
+        socket.to(roomId);
+    });
+
+/*
+    socket.on('rooms:play:move', ({roomId, x, y}) => {
+        const user = socket.request.session.user;
+        socket.to(roomId).emit('rooms:play:moved', {x, y, user: user.username})
+    }); */
 
     socket.on('rooms:join', (message) => {
         console.log(message, socket.request.session.user);
@@ -66,6 +78,18 @@ io.on('connection', (socket) => {
             roomId: message,
             username: socket.request.session.user.username
         });
+    });
+
+    socket.on('rooms:leave', (message) => {
+        console.log(message, socket.request.session.user);
+
+        rooms
+            .forEach(room => {
+                const index = room.users.findIndex(user => user.email === socket.request.session.user.email);
+                if (index >= 0) {
+                    room.users.splice(index,1);
+                }
+            });
     });
 
 });
