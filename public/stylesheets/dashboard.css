@@ -1,0 +1,144 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+
+body {
+    background-image: url(https://cdn.discordapp.com/attachments/891271708160438283/1093958378809733120/bg-dash.jpg);
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center;
+    font-family: 'Roboto Mono', monospace !important;
+}
+
+.card-body {
+    box-shadow: 0 0 30px rgba(33, 33, 33, 0.54);
+}
+
+.logo {
+    margin: 15px;
+    width: 350px;
+}
+
+::placeholder {
+    color: #c9c9c9 !important;
+    font-size: 16px;
+    font-weight: 300;
+    font-style: italic;
+}
+
+label{
+    font-weight: 700;
+}
+
+i {
+    color:#8126da;
+}
+
+button{
+    background-color: #8126da !important;
+    font-weight: 700 !important;
+    border: 0px !important;
+}
+
+button:hover{
+    background-color: #480b97 !important;
+}
+
+a {
+    text-decoration: none !important;
+    color: #8126da;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.form-control:focus{
+    border-color: #8126da !important;
+    box-shadow: 0 0 0 0.24rem rgba(129, 38, 218, 0.29) !important;
+}
+
+.avatar{
+    width: 70px;
+    margin: 5px;
+}
+
+.avatar:hover{
+    box-shadow: 0 0 11px rgba(33, 33, 33, 0.42);
+}
+
+.aviso {
+    padding-top: 30px;
+}
+
+
+.selected {
+    border: solid 4px #8126da;
+}
+
+::placeholder {
+    color: #c9c9c9 !important;
+    font-size: 16px;
+    font-weight: 300;
+    font-style: italic;
+}
+
+.tipo {
+    color: #c9c9c9 !important;
+    font-size: 18px;
+    font-weight: 300 !important;
+    font-style: italic;
+}
+
+.unselected {
+    opacity: 0.2;
+}
+
+.bg-body-tertiary {
+    background-color: #480b97 !important;
+}
+
+.white {
+    color: white;
+}
+
+.rowdash {
+    padding: 15px;
+}
+/*
+.drag-over {
+    outline: solid 10px #480b97;
+}*/
+
+.row>img{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+    width: 100px;
+    border-radius: 15px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.players{
+    align-items: baseline;
+    margin-top: 30px !important;
+}
+
+.bradius {
+    border-radius: 15px;
+}
+
+.salanum {
+    width: 100px;
+}
+
+.playbtn{
+    background-color: #fdd85d !important;
+    color:black !important;
+
+}
+
+.playbtn:hover{
+    background-color: #d710e9 !important;
+    color: white !important;
+}
+
+.hidden {
+    display: none;
+}

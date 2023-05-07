@@ -1,0 +1,89 @@
+doctype html
+html(lang="en")
+     head
+         meta(charset="utf-8")
+         meta(http-equiv="X-UA-Compatible", content="IE=edge")
+         meta(name="viewport", content="width=device-width, initial-scale=1.0")
+         title Vintage Addiction
+         link(rel="stylesheet", href="stylesheets/dashboard.css")
+         link(rel="preconnect", href="https://fonts.googleapis.com")
+         link(rel="preconnect", href="https://fonts.gstatic.com", crossorigin="")
+         link(href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap", rel="stylesheet")
+         link(rel='stylesheet', href='https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css')
+         link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css", rel="stylesheet", integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp", crossorigin="anonymous")
+         script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js")
+         script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js", integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N", crossorigin="anonymous")
+
+body
+  header
+    nav.navbar.bg-body-tertiary.fixed-top(style="background-color: #480b97 !important;")
+      .container.col-12.col-md-12.col-lg-12.col-xl-12
+        a.navbar-brand(href="/")
+          img.logo(src="images/logo.png")
+        a.nav-link(href="/logout", onclick="logOut()")
+          i.fi.fi-br-address-card.white(style="font-size:28px;")
+  .container.col-12.col-md-12.col-lg-12.col-xl-12(style="margin-top: 120px;")
+    .row.justify-content-md-center.white
+      .col
+        h2#user #{user.username} DASHBOARD
+    .row.justify-content-md-center.white
+      .col
+        p#room FAVORITE ROOM: #{user.room}
+    div.row.justify-content-center(draggable="true")
+      img#avatar.bradius(style="width: 100px;", alt="Avatar", src="#{user.avatar}")
+    .row.justify-content-center.text-center.white.rowdash
+      h2(style="font-weight: 700") Chose your room!
+      p(style="font-weight: 300") To chose your room drag your avatar to the room's number :)
+    .d-flex.justify-content-center
+      #room01.col-2.text-center.salas
+        img(name="rooms", src="images/room01.png", alt="Room", class="bradius salanum room-avatar")
+        div.empty
+          p.m-3.white Empty
+        div.waiting
+          p.m-3.white Waiting
+        div.full
+          p.m-3.white Full
+        div.leave
+          button.btn.btn-primary.btn-lg.btn-block.playbtn(type="submit", onclick="leaveRoom()") Leave
+        div.play
+          a.btn.btn-primary.btn-lg.btn-block.playbtn(type="submit", href="/rooms/room01") Play!
+      #room02.col-2.text-center.salas
+        img(name="rooms", src="images/room02.png", alt="Room", class="bradius salanum room-avatar")
+        div.empty
+          p.m-3.white Empty
+        div.waiting
+          p.m-3.white Waiting
+        div.full
+          p.m-3.white Full
+        div.leave
+          button.btn.btn-primary.btn-lg.btn-block.playbtn(type="submit", onclick="leaveRoom()") Leave
+        div.play
+          a.btn.btn-primary.btn-lg.btn-block.playbtn(type="submit", href="/rooms/room02") Play!
+      #room03.col-2.text-center.salas
+        img(name="rooms", src="images/room03.png", alt="Room", class="bradius salanum room-avatar")
+        div.empty
+          p.m-3.white Empty
+        div.waiting
+          p.m-3.white Waiting
+        div.full
+          p.m-3.white Full
+        div.leave
+          button.btn.btn-primary.btn-lg.btn-block.playbtn(type="submit", onclick="leaveRoom()") Leave
+        div.play
+          a.btn.btn-primary.btn-lg.btn-block.playbtn(type="submit", href="/rooms/room03") Play!
+      #room04.col-2.text-center.salas
+        img(name="rooms", src="images/room04.png", alt="Room", class="bradius salanum room-avatar")
+        div.empty
+          p.m-3.white Empty
+        div.waiting
+          p.m-3.white Waiting
+        div.full
+          p.m-3.white Full
+        div.leave
+          button.btn.btn-primary.btn-lg.btn-block.playbtn(type="submit", onclick="leaveRoom()") Leave
+        div.play
+          a.btn.btn-primary.btn-lg.btn-block.playbtn(type="submit", href="/rooms/room04") Play!
+
+block scripts
+  script(src="https://cdn.socket.io/4.5.4/socket.io.min.js")
+  script(src="/javascripts/dashboard.js")

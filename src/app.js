@@ -1,7 +1,3 @@
-
-// node .\src\server.js
-// entrar en http://localhost:3000/login
-
 var express = require('express');
 const session = require('express-session');
 const path = require("path");
@@ -18,9 +14,10 @@ const sessionMiddleware = session({
     saveUninitialized: true
 });
 
+
 // view engine setup
 app.set('views', path.join(process.cwd(), 'views'));
-app.set('view engine', 'hbs');
+app.set('view engine', 'jade');
 
 app.use(express.static(path.join(process.cwd(), 'public')));
 
@@ -51,7 +48,6 @@ io.on('connection', (socket) => {
         socket.join(roomId);
         socket.to(roomId);
     });
-
 /*
     socket.on('rooms:play:move', ({roomId, x, y}) => {
         const user = socket.request.session.user;

@@ -19,11 +19,11 @@ router.get('/logout', (req, res) => {
 });
 
 router.post('/login', (req, res) => {
-
     var user = users.find(user => {
+        console.log(user, req.body,user.email === req.body.email,user.password === req.body.password)
         return user.email === req.body.email && user.password === req.body.password
     });
-
+console.log(user)
     if (user) {
         req.session.user = user;
         res
