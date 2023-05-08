@@ -27,7 +27,7 @@ console.log(user)
     if (user) {
         req.session.user = user;
         res
-            .cookie('email', encodeURIComponent(req.session.user.email), {
+            .cookie('username', encodeURIComponent(req.session.user.username), {
                 secure: true
             })
             .redirect('/dashboard');

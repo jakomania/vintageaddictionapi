@@ -1,12 +1,16 @@
-const io = require('socket.io-client');
 const socket = io();
-const myEmail = "#{user.email}";
+let username = document.cookie.split('; ')
+    .find(cookie => cookie.startsWith('username='))
+    ?.split('=')[1];
+
+// No va perquè no sap quin és el email de l'usuari i no sap la seua room
 
 socket.on('rooms:status', (data) => {
     const myRoom = getMyRoom(data);
 
     data.forEach(room => {
         const container = document.getElementById(room.id);
+
 
         if (myRoom) {
             if (myRoom.id === room.id) {
@@ -67,7 +71,7 @@ socket.on('rooms:status', (data) => {
 function getMyRoom(rooms) {
     return rooms
         .filter(room =>
-            room.users.filter(user => user.email === myEmail).length > 0
+            room.users.filter(user => user.username === username).length > 0
         )[0];
 }
 

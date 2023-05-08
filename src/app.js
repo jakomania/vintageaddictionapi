@@ -1,5 +1,6 @@
 var express = require('express');
 const session = require('express-session');
+const FileStore = require('session-file-store')(session);
 const path = require("path");
 const http = require('http');
 const { Server } = require("socket.io");
@@ -9,6 +10,10 @@ const server = http.createServer(app);
 const io = new Server(server);
 
 const sessionMiddleware = session({
+    store: new FileStore({
+        path: './sessions',
+        secret: 'my-secret-key'
+    }),
     secret: 'my-secret-key',
     resave: false,
     saveUninitialized: true
@@ -32,11 +37,14 @@ app.use('/', require('./controllers/registerController'));
 app.use('/', require('./routes/dashboard'));
 app.use('/rooms', require('./routes/game'));
 
+app.get("/", (req, res) => res.redirect("/login"));
+
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
     res.status(404).send();
 });
 
+let state = {}
 
 io.on('connection', (socket) => {
     console.log('a user connected');
@@ -45,14 +53,20 @@ io.on('connection', (socket) => {
     });
 
     socket.on('rooms:play', ({roomId}) => {
-        socket.join(roomId);
-        socket.to(roomId);
-    });
-/*
-    socket.on('rooms:play:move', ({roomId, x, y}) => {
         const user = socket.request.session.user;
-        socket.to(roomId).emit('rooms:play:moved', {x, y, user: user.username})
-    }); */
+        if (!state[roomId]) {
+            state[roomId] = []
+        }
+
+        state[roomId].push({
+            username: user.username,
+            color: Object.keys(state[roomId]).length === 0 ? 'red' : 'blue',
+            owner: [],
+            winner: false
+        });
+        console.log(user.username, 'joining roomId', roomId);
+        socket.join(roomId);
+    });
 
     socket.on('rooms:join', (message) => {
         console.log(message, socket.request.session.user);
@@ -86,6 +100,40 @@ io.on('connection', (socket) => {
                     room.users.splice(index,1);
                 }
             });
+    });
+
+    socket.on('room:click', ({roomId, x, y}) => {
+        console.log(roomId, x, y)
+        const user = socket.request.session.user;
+        let enemyState = state[roomId].find((state) => state.username !== user.username);
+        let myState = state[roomId].find((state) => state.username === user.username);
+
+        if (enemyState.winner === false && myState.winner === false) {
+            if (enemyState.owner.findIndex((coords) => coords.x === x && coords.y === y) === -1) {
+                if (myState.owner.length === 0) {
+                    myState.owner.push({x,y});
+                } else {
+                    if (myState.owner.filter(coords => {
+                        console.log('1',coords.x === x, coords.y - 1 === y, coords.y + 1 === y)
+                        if ((coords.x === x) && (coords.y - 1 === y || coords.y + 1 === y)) {
+                            return true;
+                        }
+
+                        if ((coords.x === x + 1 ||coords.x === x - 1) && (coords.y - 1 === y ||coords.y + 1 === y || coords.y === y)) {
+                            return true;
+                        }
+                    }).length >= 1) {
+                        myState.owner.push({x,y});
+                    }
+                }
+            }
+
+            if (myState.owner.length >= (16 / 2) + 1) {
+                myState.winner = true;
+            }
+        }
+
+        io.to(roomId).emit('room:state', state[roomId])
     });
 
 });
