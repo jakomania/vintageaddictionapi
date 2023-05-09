@@ -8,6 +8,10 @@ body {
     font-family: 'Roboto Mono', monospace !important;
 }
 
+.tabla {
+    width: 420px;
+}
+
 .card-body {
     box-shadow: 0 0 30px rgba(33, 33, 33, 0.54);
 }

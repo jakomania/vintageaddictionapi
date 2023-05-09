@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 
-var server = require('./app');
+var server = require('./app').server;
 var port = 3000
 
 server.listen(port, () => {

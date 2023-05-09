@@ -1,7 +1,9 @@
+
+
 @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
 
 body {
-    background-image: url(https://cdn.discordapp.com/attachments/891271708160438283/1093958378809733120/bg-dash.jpg);
+    background-image: url(https://media.discordapp.net/attachments/891271708160438283/1093936584941908118/bg.gif);
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
@@ -32,16 +34,6 @@ i {
     color:#8126da;
 }
 
-button{
-    background-color: #8126da !important;
-    font-weight: 700 !important;
-    border: 0px !important;
-}
-
-button:hover{
-    background-color: #480b97 !important;
-}
-
 a {
     text-decoration: none !important;
     color: #8126da;
@@ -55,6 +47,7 @@ a {
 }
 
 .avatar{
+    border-radius: 15px;
     width: 70px;
     margin: 5px;
 }
@@ -101,44 +94,48 @@ a {
 .rowdash {
     padding: 15px;
 }
+
 /*
-.drag-over {
-    outline: solid 10px #480b97;
-}*/
-
-.row>img{
-    padding-left: 0px !important;
-    padding-right: 0px !important;
-    width: 100px;
-    border-radius: 15px;
-    margin-left: 10px;
-    margin-right: 10px;
+button{
+    background-color: #8126da !important;
+    font-weight: 700 !important;
+    border: 0px !important;
 }
 
-.players{
-    align-items: baseline;
-    margin-top: 30px !important;
+button:hover{
+    background-color: #480b97 !important;
+}
+*/
+
+button {
+    margin: auto;
+    position: relative;
+    display: block;
+    font-weight: 100;
+    background-color: #8126da !important;
+    font-weight: 700 !important;
+    border: 0px !important;
+    text-decoration: none;
+    padding: 15px 20px;
+    transition: 0.225s ease all;
+    overflow: hidden;
+    will-change: transform;
+    box-shadow: 3px 3px 0px rgba(142, 61, 183, 0.5);
+}
+button:hover, button:focus {
+    cursor: pointer;
+    transform: translate(-4px, -4px);
+    box-shadow: 7px 7px 0px rgba(142, 61, 183, 0.5);
+    color: black;
+    background-color: #480b97 !important;
+}
+.clicked {
+    cursor: pointer;
+    color: #8126da !important;
+    transform: translate(3px, 3px) !important;
+    box-shadow: 0px 0px 0px #3db74e !important;
+    border: 1px solid rgba(61, 183, 78, 0.5);
 }
 
-.bradius {
-    border-radius: 15px;
-}
 
-.salanum {
-    width: 100px;
-}
 
-.playbtn{
-    background-color: #fdd85d !important;
-    color:black !important;
-
-}
-
-.playbtn:hover{
-    background-color: #d710e9 !important;
-    color: white !important;
-}
-
-.hidden {
-    display: none;
-}
