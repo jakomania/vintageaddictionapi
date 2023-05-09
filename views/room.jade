@@ -31,7 +31,7 @@ body
             .col-3.text-center
                 img#player1Avatar.bradius(style='width:130px;border-radius: 15px;' alt='Player 1 Avatar' src='../#{user.avatar}')
                 h3#player1User.text-center.white.p-4(alt='Player 1 User') #{user.username}
-                h3.white(alt='vs') score:
+                h3.white(alt='scoreuser') score:
             #wrapper-game.col-6.text-center.d-flex.justify-content-center
                 #board-game.tabla
                     canvas#11.canvas(onclick='Whitecanvas(1,1)' width='100' height='100' style='border:2px solid #000000; background-image: url("../images/skull-game.png");')
@@ -53,8 +53,9 @@ body
             .col-3.text-center
                 img#player2Avatar.bradius(src='../#{other.avatar}' style='width: 130px;' alt='Avatar')
                 h3#player2User.text-center.white.p-4(alt='Player 2 User') #{other.username}
-                h3.white(alt='vs') score:
-
+                h3.white(alt='scoreotheruser') score:
+        h1#win.text-center.white.p-4(alt='winner') You won!
+        h1#lost.text-center.white.p-4(alt='winner') You lost!
 
 block scripts
     script(src="https://cdn.socket.io/4.5.4/socket.io.min.js")

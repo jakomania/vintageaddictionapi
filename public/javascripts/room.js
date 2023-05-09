@@ -3,10 +3,17 @@ let username = document.cookie.split('; ')
     ?.split('=')[1];
 var socket = io();
 
+socket.on('ocultaWinner', function() {
+    const win = document.getElementById('win');
+    win.classList.add('hidden');
+    const lost = document.getElementById('lost');
+    lost.classList.add('hidden');
+});
+
 setTimeout(() => {
     console.log(window.roomId);
     socket.emit("rooms:play", {roomId: window.roomId});
-}, 1000);
+}, 100);
 
 function Whitecanvas (x,y) {
     socket.emit('room:click', {
@@ -23,13 +30,21 @@ socket.on('room:state', (state) => {
        });
 
       if (user.winner) {
+
           if (user.username === username) {
+              const win = document.getElementById('win');
+              win.classList.remove('hidden');
               console.log('you won!');
 
           } else {
+              const lost = document.getElementById('lost');
+              lost.classList.remove('hidden');
               console.log('enemy won!');
 
           }
       }
    });
 });
+
+
+

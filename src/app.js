@@ -47,6 +47,7 @@ app.use((req, res, next) => {
 let state = {}
 
 io.on('connection', (socket) => {
+    socket.emit('ocultaWinner');
     console.log('a user connected');
     socket.on('disconnect', () => {
         console.log('a user disconnected');
@@ -64,6 +65,7 @@ io.on('connection', (socket) => {
             owner: [],
             winner: false
         });
+
         console.log(user.username, 'joining roomId', roomId);
         socket.join(roomId);
     });
