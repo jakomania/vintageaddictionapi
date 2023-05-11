@@ -17,8 +17,8 @@ function getAvatar(id)
     element.classList.remove('unselected');
     element.classList.add("selected");
 
-
-    form.elements['avatar'].value = element.src;
+    var avatarPath = element.getAttribute('src');
+    form.elements['avatar'].value = avatarPath;
 
 }
 
