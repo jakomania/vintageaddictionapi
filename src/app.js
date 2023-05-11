@@ -106,11 +106,11 @@ io.on('connection', (socket) => {
 
     socket.on('room:click', ({roomId, x, y}) => {
         console.log(roomId, x, y)
-        const user = socket.request.session.user;
+        const user = socket.request.session.user;        
         let enemyState = state[roomId].find((state) => state.username !== user.username);
         let myState = state[roomId].find((state) => state.username === user.username);
 
-        if (enemyState.winner === false && myState.winner === false) {
+        if (enemyState && enemyState.winner === false && myState.winner === false) {
             if (enemyState.owner.findIndex((coords) => coords.x === x && coords.y === y) === -1) {
                 if (myState.owner.length === 0) {
                     myState.owner.push({x,y});
@@ -134,7 +134,7 @@ io.on('connection', (socket) => {
                 myState.winner = true;
             }
         }
-
+        console.log('EL SEGUNDO USUARIO NO HA ENTRADO A LA SALA AUN');
         io.to(roomId).emit('room:state', state[roomId])
     });
 
