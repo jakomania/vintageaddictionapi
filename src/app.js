@@ -9,6 +9,7 @@ var app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+
 const sessionMiddleware = session({
     store: new FileStore({
         path: './sessions',
@@ -36,6 +37,8 @@ app.use('/', require('./routes/auth'));
 app.use('/', require('./controllers/registerController'));
 app.use('/', require('./routes/dashboard'));
 app.use('/rooms', require('./routes/game'));
+app.use('/api', require('./routes/api'));
+
 
 app.get("/", (req, res) => res.redirect("/login"));
 

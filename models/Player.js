@@ -1,14 +1,14 @@
-const { usersDb } = require("../users/user.db");
+// const { usersDb } = require("../users/user.db");
 
-class Player {
+// class Player {
 
-    constructor(playerData) {
-        this.player = playerData.player;
-        this.avatar = playerData.avatar;
-        this.room = playerData.room;
-    }
+//     constructor(playerData) {
+//         this.player = playerData.player;
+//         this.avatar = playerData.avatar;
+//         this.room = playerData.room;
+//     }
 
-}
+// }
 
 
-module.exports = { Player }
+// module.exports = { Player }
