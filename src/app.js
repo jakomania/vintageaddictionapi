@@ -4,7 +4,9 @@ const FileStore = require('session-file-store')(session);
 const path = require("path");
 const http = require('http');
 const { Server } = require("socket.io");
-const rooms = require('./Room');
+//const rooms = require('./Room');
+const Room = require("../models/Room");
+
 var app = express();
 const server = http.createServer(app);
 const io = new Server(server);
@@ -48,6 +50,7 @@ app.use((req, res, next) => {
 });
 
 let state = {}
+var rooms = require('./Room');
 
 io.on('connection', (socket) => {
     socket.emit('ocultaWinner');
@@ -74,20 +77,57 @@ io.on('connection', (socket) => {
     });
 
     socket.on('rooms:join', (message) => {
-        console.log(message, socket.request.session.user);
-
-        rooms
-            .forEach(room => {
-                const index = room.users.findIndex(user => user.email === socket.request.session.user.email);
-                if (index >= 0) {
-                    room.users.splice(index,1);
-                }
+        console.log('JOINING:', message, socket.request.session.user);  
+            
+        Room.findOne({id: message})
+            .then(doc => {
+            console.log('Socket user data : ', socket.request.session.user.email);
+            console.log('Users in room: ', doc.users);
+            if (doc.users.length >= 0 && doc.users.length < 2 )
+            {           
+                var new_user = {
+                    username: socket.request.session.user.username, 
+                    avatar: socket.request.session.user.avatar
+                };
+                
+                doc.users.push(new_user);
+                Room.updateOne({id: message}, { users: doc.users })
+                    .then(documentoActualizado => {
+                        if (documentoActualizado) {
+                            Room.find().exec()
+                                .then(resultados => {                                    
+                                    rooms = resultados
+                                    //console.log(rooms);
+                                })
+                                .catch(error => {
+                                    console.log('Se produjo un error:', error);
+                                });                            
+                        } else {
+                            console.log('Docummento no encontrado');
+                        }
+                    })
+                    .catch(error => {
+                        console.log('Se produjo un error: ', error);
+                    });
+            }
+            })
+            .catch(error => {
+                console.log(error);
             });
 
-        const index = rooms.findIndex(item => item.id === message);
-        if (index >= 0) {
-            rooms[index].users.push(socket.request.session.user);
-        }
+
+        // rooms
+        //     .forEach(room => {
+        //         const index = room.users.findIndex(user => user.email === socket.request.session.user.email);
+        //         if (index >= 0) {
+        //             room.users.splice(index,1);
+        //         }
+        //     });
+
+        // const index = rooms.findIndex(item => item.id === message);
+        // if (index >= 0) {
+        //     rooms[index].users.push(socket.request.session.user);
+        // }
 
         io.emit("rooms:joined", {
             roomId: message,

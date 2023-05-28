@@ -6,8 +6,8 @@ let username = document.cookie.split('; ')
 // No va perquè no sap quin és el email de l'usuari i no sap la seua room
 
 socket.on('rooms:status', (data) => {
-    const myRoom = getMyRoom(data);
-
+    const myRoom = getMyRoom(data);    
+    console.log('MY ROOM: ', myRoom);
     data.forEach(room => {
         const container = document.getElementById(room.id);
 
@@ -69,6 +69,7 @@ socket.on('rooms:status', (data) => {
  * @param rooms
  */
 function getMyRoom(rooms) {
+    
     return rooms
         .filter(room =>
             room.users.filter(user => user.username === username).length > 0

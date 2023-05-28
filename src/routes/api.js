@@ -25,21 +25,21 @@ router.post("/register", async (req, res, next) => {
 });
 
 
-router.post("/rooms", async (req, res, next) => {
-  const userData = req.body;    
+// router.post("/rooms", async (req, res, next) => {
+//   const userData = req.body;    
 
-  try {
-    const room = new Room(userData);
-    const saveRoom = await room.save();
+//   try {
+//     const room = new Room(userData);
+//     const saveRoom = await room.save();
 
-    if (saveRoom) {
-      res.status(200).send(saveRoom);
-    }
-  } catch (error) {
-    next(error);
-  }
+//     if (saveRoom) {
+//       res.status(200).send(saveRoom);
+//     }
+//   } catch (error) {
+//     next(error);
+//   }
     
-});
+// });
 
 
 
@@ -49,7 +49,7 @@ router.get('/rooms/:id', (req, res) => {
   
   Room.findOne({id: room_id})
     .then(documento => {
-        res.status(200).json(documento);      
+      res.status(200).json(documento);      
       })
     .catch(error => {
       res.status(500).json({ mensaje: 'Error en el servidor', error });
