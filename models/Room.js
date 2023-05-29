@@ -18,7 +18,12 @@ const Room = mongoose.model("Room", RoomSchema);
 
 Room.collection.drop()
   .then(() => {
-    console.log('Initial room data clear');
+    console.log('Initial room data clear');    
+      })
+  .catch(() => {
+    console.error('Nothing to clear with rooms');
+  })
+  .finally(() => {    
     var room = new Room({ id: "room01", users: [] });
     room.save();
     var room = new Room({ id: "room02", users: [] });
@@ -26,10 +31,7 @@ Room.collection.drop()
     var room = new Room({ id: "room03", users: [] });
     room.save();
     var room = new Room({ id: "room04", users: [] });
-    room.save();
-      })
-  .catch(error => {
-    console.error('Error al eliminar la colección:', error);
+    room.save();    
   });
 
 

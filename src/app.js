@@ -94,6 +94,7 @@ io.on('connection', (socket) => {
                 Room.updateOne({id: message}, { users: doc.users })
                     .then(documentoActualizado => {
                         if (documentoActualizado) {
+                            console.log('Documento actualizado');
                             Room.find().exec()
                                 .then(resultados => {                                    
                                     rooms = resultados
@@ -103,7 +104,7 @@ io.on('connection', (socket) => {
                                     console.log('Se produjo un error:', error);
                                 });                            
                         } else {
-                            console.log('Docummento no encontrado');
+                            console.log('Documento no encontrado');
                         }
                     })
                     .catch(error => {
@@ -136,15 +137,47 @@ io.on('connection', (socket) => {
     });
 
     socket.on('rooms:leave', (message) => {
-        console.log(message, socket.request.session.user);
+        //console.log('LEAVE INFO --> ', message, socket.request.session.user);
+        
+        Room.find().exec()
+            .then(docs => { 
+                docs.forEach(room => {
+                    const index = room.users.findIndex(user => user.username === socket.request.session.user.username);                                
+                    
+                    if (index >= 0) {
+                       room.users.splice(index,1);                       
+                    }
+                    Room.updateOne({id: room.id}, { users: room.users })
+                        .then(documentoActualizado => {
+                        if (documentoActualizado) {
+                            Room.find().exec()
+                                .then(resultados => {                                    
+                                    rooms = resultados;
+                                    //console.log(rooms);
+                                })
+                                .catch(error => {
+                                    console.log('Se produjo un error:', error);
+                                });                              
+                        } else {
+                            console.log('Docummento no encontrado');
+                        }
+                    })
+                    .catch(error => {
+                        console.log('Se produjo un error: ', error);
+                    });
+                })                
+            })
+            .catch(error => {
+                console.log('Se produjo un error:', error);
+            });           
 
-        rooms
-            .forEach(room => {
-                const index = room.users.findIndex(user => user.email === socket.request.session.user.email);
-                if (index >= 0) {
-                    room.users.splice(index,1);
-                }
-            });
+        // rooms
+        //     .forEach(room => {
+        //         const index = room.users.findIndex(user => user.email === socket.request.session.user.email);
+        //         if (index >= 0) {
+        //             room.users.splice(index,1);
+        //         }
+        //     });
     });
 
     socket.on('room:click', ({roomId, x, y}) => {
