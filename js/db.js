@@ -1,8 +1,8 @@
 var mongoose = require('mongoose')
 const { MongoClient, ServerApiVersion } = require('mongodb');
-const DB_URI = 'mongodb+srv://schavezb:aBk8wL6WbvU7nJ8T@cluster0.vf4ixhj.mongodb.net/?retryWrites=true&w=majority';
+const DB_URI = 'mongodb+srv://admin:DXGxk8sN0DBxUPqh@cluster0.fdnw8ln.mongodb.net/';
 const createConnection = () => {
-    var MONGO_URL = process.env.MONGO_URL || 'mongodb+srv://schavezb:aBk8wL6WbvU7nJ8T@cluster0.vf4ixhj.mongodb.net/consolelog'
+    var MONGO_URL = process.env.MONGO_URL || 'mongodb+srv://admin:DXGxk8sN0DBxUPqh@cluster0.fdnw8ln.mongodb.net/'
     mongoose.connect(MONGO_URL)
     mongoose.connection.on('connected', function () {
         console.log('Conneted to database')

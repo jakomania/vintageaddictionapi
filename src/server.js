@@ -14,7 +14,7 @@ server.listen(port, () => {
 });
 
 //Mongo DB connection
-mongoose.connect("mongodb://127.0.0.1:27017/va_db", {
+mongoose.connect("mongodb+srv://admin:DXGxk8sN0DBxUPqh@cluster0.fdnw8ln.mongodb.net/", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
