@@ -11,7 +11,6 @@ socket.on('rooms:status', (data) => {
     data.forEach(room => {
         const container = document.getElementById(room.id);
 
-
         if (myRoom) {
             if (myRoom.id === room.id) {
                 container.querySelectorAll('.room-avatar')[0].style.opacity = 1;
@@ -77,8 +76,26 @@ function getMyRoom(rooms) {
 }
 
 function leaveRoom() {
+    //const roomId = e.target.parentElement.id;
     socket.emit('rooms:leave');
-}
+    
+    ////Version con XMR y REST
+    // const xhr = new XMLHttpRequest();
+
+    // xhr.open('PUT', 'http://localhost:3000/api/leave/', true);
+    // xhr.setRequestHeader('Content-Type', 'application/json');
+
+    // const data = { username: username };
+    // const body = JSON.stringify(data);
+    // console.log(body);
+    // xhr.onload = ()=> {
+    // if (xhr.status === 200) {
+    //     console.log('Llamada PUT exitosa');
+    // } else {
+    //     console.log('Error en la llamada PUT');
+    // }};
+    // xhr.send(body);
+    }
 
 
 //Add drag & drop capabilties

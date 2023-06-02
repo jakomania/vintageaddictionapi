@@ -50,19 +50,7 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ mensaje: 'Error en el servidor' });
     };
 })
-// console.log(user)
-//     if (user) {
-//         req.session.user = user;
-//         res
-//             .cookie('username', encodeURIComponent(req.session.user.username), {
-//                 secure: false
-//             })
-//             .redirect('/dashboard');
-//         return;
-//     }
 
-//     res.redirect('/login');
-// });
 
 
 // router.post('/login', (req, res) => {

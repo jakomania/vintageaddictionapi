@@ -137,7 +137,6 @@ io.on('connection', (socket) => {
     });
 
     socket.on('rooms:leave', (message) => {
-        //console.log('LEAVE INFO --> ', message, socket.request.session.user);
         
         Room.find().exec()
             .then(docs => { 
