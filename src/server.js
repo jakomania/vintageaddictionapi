@@ -14,7 +14,7 @@ server.listen(port, () => {
 });
 
 //Mongo DB connection
-mongoose.connect("mongodb+srv://admin:DXGxk8sN0DBxUPqh@cluster0.fdnw8ln.mongodb.net/", {
+mongoose.connect("mongodb+srv://admin:DXGxk8sN0DBxUPqh@cluster0.fdnw8ln.mongodb.net/test", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

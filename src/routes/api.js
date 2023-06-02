@@ -3,7 +3,7 @@ const router = express.Router();
 
 const User = require("../../models/User");
 const Room = require("../../models/Room");
-//const status = require("http-status");
+const status = require("http-status");
 
 
 router.post("/register", async (req, res, next) => {
@@ -81,14 +81,14 @@ router.put('/rooms/:id', (req, res) => {
 
 
 
-// router.post('/login', async (req, res, next) => {
-//   //res.json(req.body);  
-//   const userData = req.body;
-//   const userFromDb = await User.findOne({ email: userData.username });
+ router.post('/login', async (req, res, next) => {
+   res.json(req.body);
+   const userData = req.body;
+   const userFromDb = await User.findOne({ email: { $regex: new RegExp(userData.username, 'i') } });
 
-//   if (userFromDb) {res.status(200).send(userFromDb);}  
-  
-// });
+   if (userFromDb) {res.status(200).send(userFromDb);}
+
+ });
 
 
 
