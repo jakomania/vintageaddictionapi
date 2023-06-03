@@ -77,7 +77,27 @@ function getMyRoom(rooms) {
 }
 
 function leaveRoom() {
-    socket.emit('rooms:leave');
+    //Version con sockets
+    // socket.emit('rooms:leave');
+
+    //Version con XMR y REST
+    const xhr = new XMLHttpRequest();
+    const endpoint = 'http://'
+        + window.location.host
+        + '/api/leave';
+    xhr.open('PUT', endpoint, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    const data = { username: username };
+    const body = JSON.stringify(data);
+    // console.log(body);
+    xhr.onload = ()=> {
+        if (xhr.status === 200) {
+            console.log('Llamada PUT exitosa');
+        } else {
+            console.log('Error en la llamada PUT');
+        }};
+    xhr.send(body);
 }
 
 
@@ -119,7 +139,37 @@ function dragLeave(e) {
 
 function drop(e) {
     const roomId = e.target.parentElement.id;
-    socket.emit('rooms:join', roomId);
+    // const avatar = document.getElementById('avatar').src;
+
+    console.log(avatar);
+
+    //Version con sockets
+    //socket.emit('rooms:join', roomId);
+
+    //Version con XHR y REST
+    const xhr = new XMLHttpRequest();
+
+    const endpoint = 'http://'
+        + window.location.host
+        + '/api/join/'
+        + roomId;
+    //console.log(endpoint);
+    xhr.open('PUT', endpoint, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    const data = {
+        username: username,
+        avatar: avatar
+    };
+    const body = JSON.stringify(data);
+    //console.log(body);
+    xhr.onload = ()=> {
+        if (xhr.status === 200) {
+            console.log('Llamada PUT exitosa');
+        } else {
+            console.log('Error en la llamada PUT');
+        }};
+    xhr.send(body);
 }
 
 function logOut() {

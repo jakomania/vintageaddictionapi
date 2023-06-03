@@ -13,7 +13,7 @@ server.listen(port, () => {
     console.log(`Starting server on port ${port}`);
 });
 
-//Mongo DB connectio
+//Mongo DB connection
 mongoose.connect("mongodb+srv://admin:DXGxk8sN0DBxUPqh@cluster0.fdnw8ln.mongodb.net/test", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
