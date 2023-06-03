@@ -41,8 +41,11 @@ router.post('/login', async (req, res) => {
     console.log('Usuario: ', req.session.user.username);
     res.status(200)
         .cookie('username', encodeURIComponent(req.session.user.username), {
-                        secure: false
+                    secure: false
                 })
+        .cookie('avatar', encodeURIComponent(req.session.user.avatar), {
+                    secure: false
+        })
         .redirect('/dashboard');
         return;
                 
@@ -50,19 +53,7 @@ router.post('/login', async (req, res) => {
         res.status(500).json({ mensaje: 'Error en el servidor' });
     };
 })
-// console.log(user)
-//     if (user) {
-//         req.session.user = user;
-//         res
-//             .cookie('username', encodeURIComponent(req.session.user.username), {
-//                 secure: false
-//             })
-//             .redirect('/dashboard');
-//         return;
-//     }
 
-//     res.redirect('/login');
-// });
 
 
 // router.post('/login', (req, res) => {

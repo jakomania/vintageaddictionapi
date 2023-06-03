@@ -52,7 +52,10 @@ body
                     canvas#44.canvas(onclick='Whitecanvas(4,4)' width='100' height='100' style='border:2px solid #000000; background-image: url("../images/skull-game.png");')
             .col-3.text-center
                 img#player2Avatar.bradius(src='../#{other.avatar}' style='width: 130px;' alt='Avatar')
+                //- img#player2Avatar.bradius(src='#{other.avatar}' style='width: 130px;' alt='Avatar')
+
                 h3#player2User.text-center.white.p-4(alt='Player 2 User') #{other.username}
+
                 h3.white(alt='scoreotheruser') score:
         h1#no2player.text-center.white.p-4.hidden(alt='no2player') YOUR ENEMY IS NOT IN THE ROOM YET!
         h1#win.text-center.white.p-4(alt='winner') You won!

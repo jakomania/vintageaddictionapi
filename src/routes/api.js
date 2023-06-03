@@ -107,7 +107,8 @@ router.post("/register", async (req, res, next) => {
     const user = new User(userData);
     const saveUser = await user.save();
     if (saveUser) {
-      res.status(200).send(saveUser);
+      res.status(200).json(saveUser);
+      //res.status(200).send(saveUser);
     }
   } catch (error) {
     next(error);
@@ -146,6 +147,7 @@ router.post('/login', async (req, res, next) => {
     res.json(req.body);
     const userData = req.body;
     const userFromDb = await User.findOne({ email: { $regex: new RegExp(userData.username, 'i') } });
+
 
     if (userFromDb) {res.status(200).send(userFromDb);}
 
@@ -421,8 +423,34 @@ router.get('/rooms/:id', (req, res) => {
     .then(documento => {
       res.status(200).json(documento);      
       })
+
     .catch(error => {
-      res.status(500).json({ mensaje: 'Error en el servidor', error });
+      console.log(error);
+    })});          
+
+
+//Agrega usuarios a la sala
+router.put('/join/:id', (req, res) => {
+  console.log('JOINING:', req.body.username);  
+        
+  Room.findOne({id: req.params.id})
+    .then(doc => {
+    if (doc.users.length >= 0 && doc.users.length < 2 ) {           
+      var new_user = {
+          username: req.body.username, 
+          avatar: req.body.avatar
+      };   
+      doc.users.push(new_user);
+      Room.updateOne({id: req.params.id}, { users: doc.users })
+        .then(() => {
+            res.status(200).json({result: 'Ok!'});
+        })
+        .catch(() => {
+          res.status(500).json({error: error});
+      });
+    }})
+    .catch((error) => {
+      res.status(500).json({error: error});
     });
 });
 
@@ -473,6 +501,7 @@ router.put('/leave/', (req, res) => {
         .catch(error => {
             console.log(error);
         })});
+
 
 //Agrega usuarios a la sala
 /**
