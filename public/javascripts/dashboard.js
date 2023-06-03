@@ -76,25 +76,27 @@ function getMyRoom(rooms) {
 }
 
 function leaveRoom() {
-    //const roomId = e.target.parentElement.id;
-    socket.emit('rooms:leave');
+    //Version con sockets
+    // socket.emit('rooms:leave');
     
-    ////Version con XMR y REST
-    // const xhr = new XMLHttpRequest();
+    //Version con XMR y REST
+    const xhr = new XMLHttpRequest();
+    const endpoint = 'http://' 
+        + window.location.host 
+        + '/api/leave';
+    xhr.open('PUT', endpoint, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
 
-    // xhr.open('PUT', 'http://localhost:3000/api/leave/', true);
-    // xhr.setRequestHeader('Content-Type', 'application/json');
-
-    // const data = { username: username };
-    // const body = JSON.stringify(data);
-    // console.log(body);
-    // xhr.onload = ()=> {
-    // if (xhr.status === 200) {
-    //     console.log('Llamada PUT exitosa');
-    // } else {
-    //     console.log('Error en la llamada PUT');
-    // }};
-    // xhr.send(body);
+    const data = { username: username };
+    const body = JSON.stringify(data);
+    console.log(body);
+    xhr.onload = ()=> {
+    if (xhr.status === 200) {
+        console.log('Llamada PUT exitosa');
+    } else {
+        console.log('Error en la llamada PUT');
+    }};
+    xhr.send(body);
     }
 
 
@@ -136,10 +138,46 @@ function dragLeave(e) {
 
 function drop(e) {
     const roomId = e.target.parentElement.id;
-    socket.emit('rooms:join', roomId);
+    const avatar = document.getElementById('avatar').src;   
+
+    console.log('MY AVATAR: ', avatar);
+
+    //Version con sockets
+    //socket.emit('rooms:join', roomId);
+
+    //Version con XHR y REST
+    const xhr = new XMLHttpRequest();
+
+    const endpoint = 'http://' 
+        + window.location.host 
+        + '/api/join/' 
+        + roomId;
+    console.log(endpoint);
+    xhr.open('PUT', endpoint, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    const data = { 
+        username: username,
+        avatar: avatar
+     };
+    const body = JSON.stringify(data);
+    console.log(body);
+    xhr.onload = ()=> {
+    if (xhr.status === 200) {
+        console.log('Llamada PUT exitosa');
+    } else {
+        console.log('Error en la llamada PUT');
+    }};
+    xhr.send(body);
 }
+    
 
 function logOut() {
     localStorage.clear();
-    location.replace("/logout")
+    location.replace("/logout");
+    setTimeout(()=> {
+        leaveRoom();
+        console.log('EXECUTED!!');
+    }, 3000);
+    // location.replace("/logout")
 }
