@@ -10,13 +10,11 @@ router.get('/:id', function(req, res, next) {
     Room.find()
         .exec()
         .then(rooms => {
-                        
             res.render('room', {
                 roomId: req.params.id,
                 user: req.session.user,
                 other: rooms.find(room => room.id === req.params.id).users.find(user => user.username !== req.session.user.username)
             });
-            
         })
         .catch(error => {
             console.log('Se produjo un error:', error);

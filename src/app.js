@@ -137,7 +137,6 @@ io.on('connection', (socket) => {
     });
 
     socket.on('rooms:leave', (message) => {
-        //console.log('LEAVE INFO --> ', message, socket.request.session.user);
         
         Room.find().exec()
             .then(docs => { 
@@ -216,8 +215,22 @@ io.on('connection', (socket) => {
 
 });
 
-setInterval(() => {
-    io.emit('rooms:status', rooms);
-}, 250);
+// setInterval(() => {
+//     io.emit('rooms:status', rooms);
+// }, 250);
+
+setInterval(()=> {
+    Room.find().exec()
+    .then(rooms => {                 
+        //console.log('<<ROOMS>> : ', rooms);                    
+        io.emit('rooms:status', rooms);
+    })                
+    .catch(error => {
+        console.log('Se produjo un error:', error);
+    });           
+}, 500);
+
+
+
 
 module.exports = {server, io};

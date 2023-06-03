@@ -1,7 +1,18 @@
 const socket = io();
+
 let username = document.cookie.split('; ')
     .find(cookie => cookie.startsWith('username='))
     ?.split('=')[1];
+
+let avatar = document.cookie.split('; ')
+    .find(cookie => cookie.startsWith('avatar='))
+    ?.split('=')[1].replace('%252F', '/');
+
+
+    
+console.log('COOKIE >>', avatar);
+//console.log('COOKIE >>', avatar);
+
 
 // No va perquè no sap quin és el email de l'usuari i no sap la seua room
 
@@ -10,7 +21,6 @@ socket.on('rooms:status', (data) => {
     console.log('MY ROOM: ', myRoom);
     data.forEach(room => {
         const container = document.getElementById(room.id);
-
 
         if (myRoom) {
             if (myRoom.id === room.id) {
@@ -77,8 +87,28 @@ function getMyRoom(rooms) {
 }
 
 function leaveRoom() {
-    socket.emit('rooms:leave');
-}
+    //Version con sockets
+    // socket.emit('rooms:leave');
+    
+    //Version con XMR y REST
+    const xhr = new XMLHttpRequest();
+    const endpoint = 'http://' 
+        + window.location.host 
+        + '/api/leave';
+    xhr.open('PUT', endpoint, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    const data = { username: username };
+    const body = JSON.stringify(data);
+    // console.log(body);
+    xhr.onload = ()=> {
+    if (xhr.status === 200) {
+        console.log('Llamada PUT exitosa');
+    } else {
+        console.log('Error en la llamada PUT');
+    }};
+    xhr.send(body);
+    }
 
 
 //Add drag & drop capabilties
@@ -119,10 +149,46 @@ function dragLeave(e) {
 
 function drop(e) {
     const roomId = e.target.parentElement.id;
-    socket.emit('rooms:join', roomId);
+    // const avatar = document.getElementById('avatar').src;  
+
+    console.log(avatar);
+
+    //Version con sockets
+    //socket.emit('rooms:join', roomId);
+
+    //Version con XHR y REST
+    const xhr = new XMLHttpRequest();
+
+    const endpoint = 'http://' 
+        + window.location.host 
+        + '/api/join/' 
+        + roomId;
+    //console.log(endpoint);
+    xhr.open('PUT', endpoint, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+
+    const data = { 
+        username: username,
+        avatar: avatar
+     };
+    const body = JSON.stringify(data);
+    //console.log(body);
+    xhr.onload = ()=> {
+    if (xhr.status === 200) {
+        console.log('Llamada PUT exitosa');
+    } else {
+        console.log('Error en la llamada PUT');
+    }};
+    xhr.send(body);
 }
+    
 
 function logOut() {
     localStorage.clear();
-    location.replace("/logout")
+    location.replace("/logout");
+    setTimeout(()=> {
+        leaveRoom();
+        console.log('EXECUTED!!');
+    }, 3000);
+    // location.replace("/logout")
 }
