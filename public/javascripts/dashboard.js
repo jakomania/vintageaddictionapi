@@ -1,7 +1,18 @@
 const socket = io();
+
 let username = document.cookie.split('; ')
     .find(cookie => cookie.startsWith('username='))
     ?.split('=')[1];
+
+let avatar = document.cookie.split('; ')
+    .find(cookie => cookie.startsWith('avatar='))
+    ?.split('=')[1].replace('%252F', '/');
+
+
+    
+console.log('COOKIE >>', avatar);
+//console.log('COOKIE >>', avatar);
+
 
 // No va perquè no sap quin és el email de l'usuari i no sap la seua room
 
@@ -89,7 +100,7 @@ function leaveRoom() {
 
     const data = { username: username };
     const body = JSON.stringify(data);
-    console.log(body);
+    // console.log(body);
     xhr.onload = ()=> {
     if (xhr.status === 200) {
         console.log('Llamada PUT exitosa');
@@ -138,9 +149,9 @@ function dragLeave(e) {
 
 function drop(e) {
     const roomId = e.target.parentElement.id;
-    const avatar = document.getElementById('avatar').src;   
+    // const avatar = document.getElementById('avatar').src;  
 
-    console.log('MY AVATAR: ', avatar);
+    console.log(avatar);
 
     //Version con sockets
     //socket.emit('rooms:join', roomId);
@@ -152,7 +163,7 @@ function drop(e) {
         + window.location.host 
         + '/api/join/' 
         + roomId;
-    console.log(endpoint);
+    //console.log(endpoint);
     xhr.open('PUT', endpoint, true);
     xhr.setRequestHeader('Content-Type', 'application/json');
 
@@ -161,7 +172,7 @@ function drop(e) {
         avatar: avatar
      };
     const body = JSON.stringify(data);
-    console.log(body);
+    //console.log(body);
     xhr.onload = ()=> {
     if (xhr.status === 200) {
         console.log('Llamada PUT exitosa');

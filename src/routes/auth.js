@@ -41,8 +41,11 @@ router.post('/login', async (req, res) => {
     console.log('Usuario: ', req.session.user.username);
     res.status(200)
         .cookie('username', encodeURIComponent(req.session.user.username), {
-                        secure: false
+                    secure: false
                 })
+        .cookie('avatar', encodeURIComponent(req.session.user.avatar), {
+                    secure: false
+        })
         .redirect('/dashboard');
         return;
                 
