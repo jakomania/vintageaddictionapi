@@ -11,6 +11,25 @@ var app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+// swagger
+const swaggerUI = require("swagger-ui-express");
+const swaggerJsDoc = require("swagger-jsdoc");
+const swaggerSpec = {
+    definition: {
+        openapi: "3.0.0",
+        info: {
+            title: "Node MongoDB API",
+            version: "1.0.0"
+        },
+        servers: [
+            {
+                url: "http://localhost:3000"
+            },
+        ],
+    },
+    apis: [path.join(__dirname, "routes", "*.js")],
+};
+
 
 const sessionMiddleware = session({
     store: new FileStore({
@@ -41,6 +60,7 @@ app.use('/', require('./routes/dashboard'));
 app.use('/rooms', require('./routes/game'));
 app.use('/api', require('./routes/api'));
 
+app.use("/api-doc", swaggerUI.serve, swaggerUI.setup(swaggerJsDoc(swaggerSpec)))
 
 app.get("/", (req, res) => res.redirect("/login"));
 

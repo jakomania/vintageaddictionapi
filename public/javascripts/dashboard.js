@@ -102,6 +102,7 @@ function leaveRoom() {
     const body = JSON.stringify(data);
     // console.log(body);
     xhr.onload = ()=> {
+
     if (xhr.status === 200) {
         console.log('Llamada PUT exitosa');
     } else {
@@ -149,6 +150,7 @@ function dragLeave(e) {
 
 function drop(e) {
     const roomId = e.target.parentElement.id;
+
     // const avatar = document.getElementById('avatar').src;  
 
     console.log(avatar);
@@ -159,9 +161,11 @@ function drop(e) {
     //Version con XHR y REST
     const xhr = new XMLHttpRequest();
 
+
     const endpoint = 'http://' 
         + window.location.host 
         + '/api/join/' 
+
         + roomId;
     //console.log(endpoint);
     xhr.open('PUT', endpoint, true);
